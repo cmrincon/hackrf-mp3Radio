@@ -8,7 +8,9 @@ int main(int argc,char *argv[])
 {
 	pthread_t thread_id;
 	int ret;
-	
+	struct decoder_args threadArgs;
+threadArgs.file_name=argv[1];
+ 
 	if (argc != 2)
 	{
 		printf("Need only 1 argument: path of mp3 file\n");
@@ -16,12 +18,12 @@ int main(int argc,char *argv[])
 	}
 	
 	//Init
-	frame_buffer = malloc(BUFFERSIZE);
+	ThreadArgs.outputbuffer = malloc(BUFFERSIZE);
 	init_decode(argv[1]);
 	
 	
 	//Program
-	if (pthread_create(&thread_id, NULL, &decode, NULL) != 0) exit(-1);
+	if (pthread_create(&thread_id, NULL, &decode, &threadArgs) != 0) exit(-1);
 	if (ret = pthread_join(thread_id, NULL) != 0) exit(-1);
 
 	//close decoder
