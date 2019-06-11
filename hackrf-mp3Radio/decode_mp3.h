@@ -11,3 +11,9 @@ extern char* frame_buffer;
 extern unsigned int bufferFreeLen;
 extern AVFormatContext *fmt_ctx;
 extern AVCodecContext *codec_ctx;
+
+Struct decoder_args
+{
+char *file_name;
+char *outputbuffer;
+};
