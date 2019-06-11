@@ -1,10 +1,6 @@
 #include "decode_mp3.h"
 
 
-
-AVFormatContext *fmt_ctx;
-AVCodecContext *codec_ctx;
-
 void init_decode(char* file_name)
 {
 	const char *url_file = "url = file:";
@@ -21,16 +17,14 @@ void init_decode(char* file_name)
 }
 
 
-unsigned int decode(char * file_name, char * outbuffer, unsigned int bufferlen)
+unsigned int decode()
 {
 	unsigned int ret = 0;
 	AVPacket *paket = av_packet_alloc();
-	init_decode(file_name);
 	//START THE DECODING!
 
 
 
-	close_decode();
 	av_packet_free(paket);
 
 	return ret;
