@@ -2,7 +2,7 @@
 #include "decode_mp3.h"
 #include <pthread.h>
 
-#define BUFFERSIZE 2^13
+#define BUFFERSIZE 1<<13
 
 int main(int argc,char *argv[])
 {
@@ -21,9 +21,8 @@ int main(int argc,char *argv[])
 	
 	
 	//Program
-
-	if (pthread_create(thread_id, NULL, decode, NULL) < 0) exit(-1);
-	pthread_join(thread_id, &ret);
+	if (pthread_create(&thread_id, NULL, &decode, NULL) != 0) exit(-1);
+	if (ret = pthread_join(thread_id, NULL) != 0) exit(-1);
 
 	//close decoder
 	close_decode();

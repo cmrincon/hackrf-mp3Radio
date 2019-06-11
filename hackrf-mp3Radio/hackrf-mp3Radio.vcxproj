@@ -47,11 +47,11 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>H:\Includes</IncludePath>
+    <IncludePath>D:\Linux includes</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
-      <LibraryDependencies>avcodec;avformat;portaudio</LibraryDependencies>
+      <LibraryDependencies>avcodec;avformat;portaudio;pthread</LibraryDependencies>
     </Link>
     <RemotePostBuildEvent>
       <Command>gpio export 17 out</Command>

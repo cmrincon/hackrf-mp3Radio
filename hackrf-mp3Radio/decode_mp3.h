@@ -3,9 +3,9 @@
 #include<string.h>
 
 
-void init_decode(char* file_name);
-void close_decode();
-extern unsigned int decode();
+extern void init_decode(char* file_name);
+extern void close_decode();
+extern void* decode(void *arg);
 
 extern char* frame_buffer;
 extern unsigned int bufferFreeLen;
