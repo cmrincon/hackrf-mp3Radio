@@ -3,16 +3,14 @@
 #include<string.h>
 
 
-extern void init_decode(char* file_name);
-extern void close_decode();
+void init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **fmt_ctx);
+void close_decode(AVCodecContext *codec_ctx, AVFormatContext *fmt_ctx);
 extern void* decode(void *arg);
 
-extern char* frame_buffer;
-extern unsigned int bufferFreeLen;
-extern AVFormatContext *fmt_ctx;
-extern AVCodecContext *codec_ctx;
+//extern unsigned int bufferFreeLen;
 
-Struct decoder_args
+
+struct decoder_args
 {
 char *file_name;
 char *outputbuffer;
