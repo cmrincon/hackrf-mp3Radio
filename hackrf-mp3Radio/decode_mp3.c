@@ -19,6 +19,7 @@ void init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **
 	AVCodec *codec = avcodec_find_decoder(AV_CODEC_ID_MP3);
 	*codec_ctx = avcodec_alloc_context3(codec);
 	if (avcodec_open2(*codec_ctx,codec,NULL) < 0) exit(-1);
+	(*codec_ctx)->skip_frame = AVDISCARD_ALL;
 
 }
 
@@ -29,17 +30,28 @@ void* decode(void *arg)
 	AVCodecContext *codec_ctx = NULL;
 	AVFormatContext *fmt_ctx = NULL;
 	AVPacket packet;
+	AVFrame *frame;
 	struct decoder_args *thread_args = (struct decoder_args *) arg;
 	//INIT DECODE
 	av_init_packet(&packet);
+	frame = av_frame_alloc();
 	init_decode(thread_args->file_name, &codec_ctx, &fmt_ctx);
 
 	//START THE DECODING!
 	while (av_read_frame(fmt_ctx, &packet) >= 0)
 	{
-		avformat_flush(fmt_ctx);
+		if ((ret = avcodec_send_packet(codec_ctx, &packet)) < 0)
+		{
+			printf("ERROR\n");
+			//exit(-1);
+		}
+		if (avcodec_receive_frame(codec_ctx, frame) != 0)
+		{
+			printf("ERROR\n");
+			//exit(-1);
+		}
 	}
-
+	av_frame_free(&frame);
 	close_decode(codec_ctx, fmt_ctx);
 	return ret;
 }
