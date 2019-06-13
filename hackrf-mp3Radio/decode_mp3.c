@@ -53,16 +53,16 @@ void* decode(void *arg)
 				printf("ERROR\n");
 				//exit(-1);
 			}
-			treat_packet(frame,thread_args->outputbuffer,thread_args->mutex);
+			treat_packet(frame);
 		}
 	}
 	av_frame_free(&frame);
 	close_decode(codec_ctx, fmt_ctx);
 	return ret;
 }
-void treat_packet(AVFrame *frame, uint8_t *buffer, struct struc_mutex *mutex)
+void treat_packet(AVFrame *frame)
 {
-
+	
 }
 
 void close_decode(AVCodecContext *codec_ctx, AVFormatContext *fmt_ctx)

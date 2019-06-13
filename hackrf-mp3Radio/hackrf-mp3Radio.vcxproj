@@ -69,10 +69,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="decode_mp3.c" />
+    <ClCompile Include="fifo.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="decode_mp3.h" />
+    <ClInclude Include="fifo.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
