@@ -21,11 +21,43 @@ void init_fifo()
 }
 int fifo_pop()
 {
-	return 0;
+	pthread_mutex_lock(&lock);
+	pthread_mutex_unlock(&lock);
 }
-uint8_t fifo_push()
+int fifo_push(uint8_t *data, unsigned int len)
 {
-
+	long long start_bytes;
+	if (len > BUFFERSIZE)
+	{
+		printf("Not enought buffer size\n");
+		
+		return (-1);
+	}
+	if (len < 0)
+	{
+		printf("data length < 1\n");
+		return (-2);
+	}
+	pthread_mutex_lock(&lock);
+	while (len > free_bytes)
+	{
+		pthread_cond_wait(&write_cond, &lock);
+	}
+	
+	if ((start_bytes = BUFFERSIZE - write_dly) < len)
+	{
+		memcopy((buffer + write_dly), data, (BUFFERSIZE - write_dly));
+		memcopy(buffer, data + start_bytes, len - start_bytes);
+		write_dly = len - start_bytes;
+	}
+	else
+	{
+		memcopy((buffer + write_dly), data, len);
+		write_dly = (start_bytes == 0) ? 0 : write_dly + len ;
+	}
+	free_bytes -= len;
+	pthread_mutex_unlock(&lock);
+	return 0;
 }
 void free_fifo()
 {
