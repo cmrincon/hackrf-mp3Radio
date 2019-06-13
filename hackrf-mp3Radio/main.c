@@ -3,6 +3,9 @@
 #include <pthread.h>
 
 #define BUFFERSIZE 1<<13
+void init_mutex(struct struc_mutex *mutex);
+void destroy_mutex(struct struc_mutex *mutex);
+
 
 int main(int argc,char *argv[])
 {
@@ -18,6 +21,7 @@ int main(int argc,char *argv[])
 	
 	//Init
 	threadArgs.outputbuffer = malloc(BUFFERSIZE);
+	init_mutex(&threadArgs.mutex);
 	
 	
 	//Program
@@ -28,4 +32,16 @@ int main(int argc,char *argv[])
 
 	free(threadArgs.outputbuffer);
 	return 0;
+}
+void init_mutex(struct struc_mutex *mutex)
+{
+	//Add return value test
+	pthread_mutex_init(&mutex->lock, NULL);
+	pthread_cond_init(&mutex->cond_empty, NULL);
+	pthread_cond_init(&mutex->cond_full, NULL);
+}
+void destroy_mutex(struct struc_mutex *mutex)
+{
+	pthread_cond_destroy(&mutex->cond_empty);
+	pthread_cond_destroy(&mutex->cond_full);
 }
