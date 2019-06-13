@@ -19,12 +19,12 @@ void init_fifo()
 	write_dly = 0;
 	free_bytes = BUFFERSIZE;
 }
-int fifo_pop()
+uint8_t fifo_pop()
 {
 	pthread_mutex_lock(&lock);
 	pthread_mutex_unlock(&lock);
 }
-int fifo_push(uint8_t *data, unsigned int len)
+int fifo_push(const uint8_t *data, const size_t len)
 {
 	long long start_bytes;
 	if (len > BUFFERSIZE)
@@ -56,6 +56,7 @@ int fifo_push(uint8_t *data, unsigned int len)
 		write_dly = (start_bytes == 0) ? 0 : write_dly + len ;
 	}
 	free_bytes -= len;
+	pthread_cond_signal(&read_cond);
 	pthread_mutex_unlock(&lock);
 	return 0;
 }
