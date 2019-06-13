@@ -1,11 +1,13 @@
 #include "fifo.h"
 
 
-#define BUFFERSIZE 2<<13
-uint8_t *buffer;
+uint8_t *buffer=NULL;
 pthread_mutex_t lock;
 pthread_cond_t write_cond;
 pthread_cond_t read_cond;
+unsigned int read_dly;
+unsigned int write_dly;
+unsigned int free_bytes;
 
 void init_fifo()
 {
@@ -13,11 +15,12 @@ void init_fifo()
 	pthread_mutex_init(&lock, NULL);
 	pthread_cond_init(&write_cond, NULL);
 	pthread_cond_init(&read_cond, NULL);
-
+	read_dly = 0;
+	write_dly = 0;
+	free_bytes = BUFFERSIZE;
 }
 int fifo_pop()
 {
-
 	return 0;
 }
 uint8_t fifo_push()
