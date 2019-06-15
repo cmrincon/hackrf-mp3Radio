@@ -1,9 +1,12 @@
 #include <stdint.h>
 #include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define BUFFERSIZE 2<<15
+#define BUFFERSIZE (unsigned int) (2<<15)
 
 void init_fifo();
-extern uint8_t fifo_pop();
+extern size_t fifo_pop(uint8_t *outdata, size_t len);
 extern int fifo_push(const uint8_t *data, const size_t len);
 void free_fifo();

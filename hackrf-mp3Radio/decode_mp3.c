@@ -54,6 +54,7 @@ void* decode(void *arg)
 				//exit(-1);
 			}
 			treat_packet(frame);
+			av_frame_unref(frame);
 		}
 	}
 	av_frame_free(&frame);
@@ -62,7 +63,17 @@ void* decode(void *arg)
 }
 void treat_packet(AVFrame *frame)
 {
-	
+	unsigned int ndata;
+	uint8_t conv_data[(frame->linesize[0])*2];
+
+	for (int i = 0, u=0; i < (frame->linesize[0] - 1);i+=2)
+	{
+		conv_data[u] = *(frame->data[0] + i); u++;
+		conv_data[u] = *(frame->data[0] + i+1); u++;
+		conv_data[u] = *(frame->data[1] + i); u++;
+		conv_data[u] = *(frame->data[1] + i+1); u++;
+	}
+	fifo_push(&conv_data[0], (frame->linesize[0] * 2));
 }
 
 void close_decode(AVCodecContext *codec_ctx, AVFormatContext *fmt_ctx)
