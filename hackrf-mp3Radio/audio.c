@@ -11,7 +11,7 @@ void init_audio()
 	outputParameters.device = Pa_GetDefaultOutputDevice();
 	outputParameters.channelCount = 2;
 	outputParameters.sampleFormat = paInt16;
-	outputParameters.suggestedLatency = Pa_GetDeviceInfo(outputParameters.device)->defaultHighOutputLatency;
+	outputParameters.suggestedLatency = Pa_GetDeviceInfo(outputParameters.device)->defaultLowOutputLatency;
 	outputParameters.hostApiSpecificStreamInfo = NULL;
 	Pa_OpenStream(	& stream,  NULL,  & outputParameters, 48000, FRAMESPERBUFFER, paClipOff,  NULL, NULL);
 	Pa_StartStream(stream);

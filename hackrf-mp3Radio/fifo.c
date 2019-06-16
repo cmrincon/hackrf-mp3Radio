@@ -2,22 +2,27 @@
 
 
 uint8_t *buffer=NULL;
-pthread_mutex_t lock;
-pthread_cond_t write_cond;
-pthread_cond_t read_cond;
-unsigned int read_dly;
-unsigned int write_dly;
-unsigned int free_bytes;
+volatile pthread_mutex_t lock;
+volatile pthread_cond_t write_cond;
+volatile pthread_cond_t read_cond;
+volatile unsigned int read_dly;
+volatile unsigned int write_dly;
+volatile unsigned int free_bytes;
 
-void init_fifo()
+int init_fifo()
 {
 	buffer = malloc(BUFFERSIZE);
+	if (buffer == NULL)
+	{
+		return (-1);
+	}
 	pthread_mutex_init(&lock, NULL);
 	pthread_cond_init(&write_cond, NULL);
 	pthread_cond_init(&read_cond, NULL);
 	read_dly = 0;
 	write_dly = 0;
 	free_bytes = BUFFERSIZE;
+	return 0;
 }
 size_t fifo_pop(uint8_t *outdata,size_t len)
 {
@@ -40,7 +45,7 @@ size_t fifo_pop(uint8_t *outdata,size_t len)
 		count_bytes = len;
 	}
 	else
-	{//tocar
+	{
 		available_bytes_till_end = BUFFERSIZE - read_dly;
 		count_bytes = len > available_bytes_till_end ? available_bytes_till_end : len;
 		outdata = memcpy(outdata, (buffer + read_dly), count_bytes);
