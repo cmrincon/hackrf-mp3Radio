@@ -2,9 +2,9 @@
 
 
 uint8_t *buffer=NULL;
-volatile pthread_mutex_t lock;
-volatile pthread_cond_t write_cond;
-volatile pthread_cond_t read_cond;
+pthread_mutex_t lock;
+pthread_cond_t write_cond;
+pthread_cond_t read_cond;
 volatile unsigned int read_dly;
 volatile unsigned int write_dly;
 volatile unsigned int free_bytes;
@@ -26,7 +26,6 @@ int init_fifo()
 }
 size_t fifo_pop(uint8_t *outdata,size_t len)
 {
-	unsigned int read_bytes=0;
 	unsigned int count_bytes=0;
 	unsigned int available_bytes_till_end = 0;
 	if (len == 0) return 0;

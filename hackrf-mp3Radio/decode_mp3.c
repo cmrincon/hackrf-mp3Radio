@@ -19,7 +19,7 @@ int init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **f
 	if  (avformat_find_stream_info(*fmt_ctx, NULL) < 0) 
 		return (-1);
 	*stream_index = av_find_best_stream(*fmt_ctx, AVMEDIA_TYPE_AUDIO, -1, -1, NULL, 0);
-	if (codec = avcodec_find_decoder(AV_CODEC_ID_MP3) == NULL) 
+	if ((codec = avcodec_find_decoder(AV_CODEC_ID_MP3)) == NULL) 
 		return (-1);
 	*codec_ctx = avcodec_alloc_context3(codec);
 	if (avcodec_open2(*codec_ctx,codec,NULL) < 0) 
@@ -30,7 +30,7 @@ int init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **f
 
 void* decode(void *arg)
 {
-	int ret = 0, stream_idx=0, decod_return;
+	int ret = -1, stream_idx=0, decod_return;
 	AVCodecContext *codec_ctx = NULL;
 	AVFormatContext *fmt_ctx = NULL;
 	AVPacket packet;
@@ -40,14 +40,13 @@ void* decode(void *arg)
 
 	//INIT DECODE
 	av_init_packet(&packet);
-	if ((frame = av_frame_alloc()) == NULL) pthread_exit(-1);
+	if ((frame = av_frame_alloc()) == NULL) pthread_exit(&ret);
 	if (init_decode(thread_args->file_name, &codec_ctx, &fmt_ctx, &stream_idx) < 0)
 	{
 		close_decode(codec_ctx, fmt_ctx);
-		pthread_exit(-1);
+		pthread_exit(&ret);
 	}
 
-	
 	//START THE DECODING!
 	do
 	{
@@ -55,7 +54,7 @@ void* decode(void *arg)
 		if (decod_return <0) break;
 		if (packet.stream_index == stream_idx)
 		{
-			if ((ret = avcodec_send_packet(codec_ctx, &packet)) < 0)
+			if (avcodec_send_packet(codec_ctx, &packet) < 0)
 			{
 				printf("ERROR\n");
 				//exit(-1);
@@ -71,11 +70,11 @@ void* decode(void *arg)
 	} while (1);
 	av_frame_free(&frame);
 	close_decode(codec_ctx, fmt_ctx);
-	return ret;
+	ret = 0;
+	return (&ret);
 }
 void treat_packet(AVFrame *frame)
 {
-	unsigned int ndata;
 	uint8_t conv_data[(frame->linesize[0])*2];
 
 	for (int i = 0, u=0; i < (frame->linesize[0] - 1);i+=2)
