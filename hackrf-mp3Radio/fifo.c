@@ -35,7 +35,7 @@ size_t fifo_pop(uint8_t *outdata, unsigned int len)
 	unsigned int bytes_till_end;
 	unsigned int bytes_copyed=0;
 	unsigned int bytes_left = len;
-	while (bytes_left <= 0)
+	while (bytes_left >= 0)
 	{
 		if (buffer_pool[read_pool].flag != 1) continue;
 		bytes_till_end = BUFFERSIZE - buffer_pool[read_pool].read_dly;
@@ -68,7 +68,7 @@ int fifo_push(const uint8_t *data, const unsigned int len)
 	unsigned int bytes_left=len;
 	unsigned int bytes_copyed=0;
 
-	while (bytes_left <= 0)
+	while (bytes_left >= 0)
 	{
 		if (buffer_pool[write_pool].flag != 0) continue;
 		bytes_till_end = BUFFERSIZE - buffer_pool[write_pool].write_dly;

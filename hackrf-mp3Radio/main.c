@@ -36,7 +36,7 @@ int main(int argc,char *argv[])
 	if (pthread_create(&thread_id, NULL, &decode, &threadArgs) != 0) exit(-1);
 	
 	sleep(2);
-	while ((ndata = fifo_pop(&buff[0],  8192)) > 0)
+	while ((ndata = fifo_pop(&buff[0],  1200)) > 0)
 	{
 		audio_write(&buff[0], ndata);
 	}
