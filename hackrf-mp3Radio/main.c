@@ -12,9 +12,8 @@ int main(int argc,char *argv[])
 	pthread_t thread_id;
 	struct decoder_args threadArgs;
 	uint8_t buff[8192];
-	uint8_t buff_next[8192];
-	int ndata;
-	int ndata_next;
+	unsigned int ndata;
+
 
  
 	if (argc != 2)
@@ -24,7 +23,11 @@ int main(int argc,char *argv[])
 	}
 	threadArgs.file_name = argv[1];
 	//Init
-	init_fifo();
+	if (init_fifo() != 0)
+	{
+		printf("Could not open FIFO buffer\n");
+		goto close;
+	}
 	init_audio();
 
 	
@@ -33,14 +36,13 @@ int main(int argc,char *argv[])
 	if (pthread_create(&thread_id, NULL, &decode, &threadArgs) != 0) exit(-1);
 	
 	sleep(2);
-	while ((ndata_next = fifo_pop(&buff_next[0], (size_t) 8192)) > 0)
+	while ((ndata = fifo_pop(&buff[0],  8192)) > 0)
 	{
 		audio_write(&buff[0], ndata);
-		ndata = ndata_next;
-		memcpy(&buff[0], &buff_next[0], ndata);
 	}
 	if (pthread_join(thread_id, NULL) != 0) exit(-1);
 	//close decoder
+	close:
 	free_fifo();
 	audio_close();
 	return 0;

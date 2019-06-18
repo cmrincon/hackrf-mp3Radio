@@ -79,10 +79,10 @@ void treat_packet(AVFrame *frame)
 
 	for (int i = 0, u=0; i < (frame->linesize[0] - 1);i+=2)
 	{
-		conv_data[u] = *(frame->data[0] + i); u++;
-		conv_data[u] = *(frame->data[0] + i+1); u++;
-		conv_data[u] = *(frame->data[1] + i); u++;
-		conv_data[u] = *(frame->data[1] + i+1); u++;
+		conv_data[u++] = *(frame->data[0] + i);
+		conv_data[u++] = *(frame->data[0] + i+1);
+		conv_data[u++] = *(frame->data[1] + i);
+		conv_data[u++] = *(frame->data[1] + i+1);
 	}
 	fifo_push(&conv_data[0], (frame->linesize[0] * 2));
 }
