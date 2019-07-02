@@ -3,7 +3,11 @@
 
 char* frame_buffer;
 
+int parser(enum AVSampleFormat input_format, unsigned long pa_format)
+{
+	unsigned char input_bytes, output_bytes;
 
+}
 int init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **fmt_ctx, int *stream_index)
 {
 	AVCodec *codec;
@@ -36,6 +40,9 @@ void* decode(void *arg)
 	AVPacket packet;
 	AVFrame *frame;
 	struct decoder_args *thread_args = (struct decoder_args *) arg;
+
+
+	
 
 
 	//INIT DECODE

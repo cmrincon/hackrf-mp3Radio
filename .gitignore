@@ -52,3 +52,5 @@ Mkfile.old
 dkms.conf
 /hackrf-mp3Radio/.vs/hackrf-mp3Radio/v15
 /hackrf-mp3Radio/obj/ARM/Debug
+/hackrf-mp3Radio/fifo_wolocks.h
+/hackrf-mp3Radio/fifo_wolocks.c

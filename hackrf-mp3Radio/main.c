@@ -40,7 +40,7 @@ int main(int argc,char *argv[])
 	{
 		audio_write(&buff[0], ndata);
 	}
-	if (pthread_join(thread_id, NULL) != 0) exit(-1);
+	if (pthread_join(thread_id, NULL) != 0) goto close;
 	//close decoder
 	close:
 	free_fifo();
