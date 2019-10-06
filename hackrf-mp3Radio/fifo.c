@@ -31,7 +31,7 @@ size_t fifo_pop(uint8_t *outdata, size_t len)
 	if (len == 0) return 0;
 
 	pthread_mutex_lock(&lock);
-	while ((BUFFERSIZE - free_bytes) <= 0)
+	while ((BUFFERSIZE - free_bytes) <= 0) //¿?
 	{
 		pthread_cond_wait(&read_cond, &lock);
 	}

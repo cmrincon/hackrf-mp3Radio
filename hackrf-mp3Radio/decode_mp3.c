@@ -40,10 +40,7 @@ void* decode(void *arg)
 	AVPacket packet;
 	AVFrame *frame;
 	struct decoder_args *thread_args = (struct decoder_args *) arg;
-
-
-	
-
+	   
 
 	//INIT DECODE
 	av_init_packet(&packet);

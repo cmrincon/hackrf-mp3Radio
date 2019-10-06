@@ -5,15 +5,12 @@
 
 
 
-
-
 int main(int argc,char *argv[])
 {
 	pthread_t thread_id;
 	struct decoder_args threadArgs;
 	uint8_t buff[8192];
 	unsigned int ndata;
-
 
  
 	if (argc != 2)
