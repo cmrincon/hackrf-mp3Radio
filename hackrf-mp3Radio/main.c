@@ -5,6 +5,7 @@
 
 
 
+
 int main(int argc,char *argv[])
 {
 	pthread_t thread_id;
@@ -25,17 +26,24 @@ int main(int argc,char *argv[])
 		printf("Could not open FIFO buffer\n");
 		goto close;
 	}
-	init_audio();
-
 	
+
 	
 	//Program
 	if (pthread_create(&thread_id, NULL, &decode, &threadArgs) != 0) exit(-1);
 	
 	sleep(2);
+	// EMPIEZA
+	if ((ndata = fifo_pop(&buff[0], 1200)) > 0)
+	{
+		init_audio(format.nChannels, format.format, format.sampleRate);
+		audio_write(&buff[0], ndata / format.n_bytes);
+	}
+
+
 	while ((ndata = fifo_pop(&buff[0],  1200)) > 0)
 	{
-		audio_write(&buff[0], ndata);
+		audio_write(&buff[0], ndata/format.n_bytes);
 	}
 	if (pthread_join(thread_id, NULL) != 0) goto close;
 	//close decoder

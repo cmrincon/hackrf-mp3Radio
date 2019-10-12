@@ -3,11 +3,6 @@
 
 char* frame_buffer;
 
-int parser(enum AVSampleFormat input_format, unsigned long pa_format)
-{
-	unsigned char input_bytes, output_bytes;
-
-}
 int init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **fmt_ctx, int *stream_index)
 {
 	AVCodec *codec;
@@ -40,6 +35,7 @@ void* decode(void *arg)
 	AVPacket packet;
 	AVFrame *frame;
 	struct decoder_args *thread_args = (struct decoder_args *) arg;
+	void (*treatment)(AVFrame*);
 	   
 
 	//INIT DECODE
@@ -50,7 +46,7 @@ void* decode(void *arg)
 		close_decode(codec_ctx, fmt_ctx);
 		pthread_exit(&ret);
 	}
-
+	char first_time = 1;
 	//START THE DECODING!
 	do
 	{
@@ -68,7 +64,16 @@ void* decode(void *arg)
 				printf("ERROR\n");
 				//exit(-1);
 			}
-			treat_packet(frame);
+			if (first_time)
+			{
+				if (getFormat(frame,&treatment) < 0)
+				{
+					printf("Format not supported\n");
+					exit(-1);
+				}
+				first_time = 0;
+			}
+			treatment(frame);
 			av_frame_unref(frame);
 		}
 	} while (1);
@@ -79,16 +84,7 @@ void* decode(void *arg)
 }
 void treat_packet(AVFrame *frame)
 {
-	uint8_t conv_data[(frame->linesize[0])*2];
-
-	for (int i = 0, u=0; i < (frame->linesize[0] - 1);i+=2)
-	{
-		conv_data[u++] = *(frame->data[0] + i);
-		conv_data[u++] = *(frame->data[0] + i+1);
-		conv_data[u++] = *(frame->data[1] + i);
-		conv_data[u++] = *(frame->data[1] + i+1);
-	}
-	fifo_push(&conv_data[0], (frame->linesize[0] * 2));
+	
 }
 
 void close_decode(AVCodecContext *codec_ctx, AVFormatContext *fmt_ctx)

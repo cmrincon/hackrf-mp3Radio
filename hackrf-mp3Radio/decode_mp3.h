@@ -3,7 +3,9 @@
 #include<string.h>
 #include <time.h>
 #include <unistd.h> 
-#include "fifo.h"
+#include "treatment.h"
+
+
 
 struct decoder_args
 {

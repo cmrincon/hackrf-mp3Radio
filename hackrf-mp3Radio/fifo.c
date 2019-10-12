@@ -102,6 +102,13 @@ void free_fifo()
 	pthread_cond_destroy(&write_cond);
 	pthread_cond_destroy(&read_cond);
 }
+unsigned int getFreeBytes()
+{
+	pthread_mutex_lock(&lock);
+	unsigned int result = free_bytes;
+	pthread_mutex_unlock(&lock);
+	return result;
+}
 
 
 
