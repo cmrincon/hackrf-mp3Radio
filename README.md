@@ -1,6 +1,6 @@
 What is Hackrf-mp3Radio?
 
-Hrfmp3R will be an application which let you transmit mp3 files over the air and listen them on your fm radio. The application is under construction, so be patient.
+Hrf-mp3R will be an application which let you transmit mp3 files over the air and listen them on your fm radio. The application is under construction, so be patient.
 The project is open to new ideas or features, so open a issue if you got a interesting idea.
 
 
