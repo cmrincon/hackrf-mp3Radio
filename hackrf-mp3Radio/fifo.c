@@ -2,12 +2,12 @@
 
 
 uint8_t *buffer = NULL;
-pthread_mutex_t lock;
-pthread_cond_t write_cond;
-pthread_cond_t read_cond;
-volatile unsigned int read_dly;
-volatile unsigned int write_dly;
-volatile unsigned int free_bytes;
+static pthread_mutex_t lock;
+static pthread_cond_t write_cond;
+static pthread_cond_t read_cond;
+static volatile unsigned int read_dly;
+static volatile unsigned int write_dly;
+static volatile unsigned int free_bytes;
 
 int init_fifo()
 {

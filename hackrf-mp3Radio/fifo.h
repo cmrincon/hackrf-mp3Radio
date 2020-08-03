@@ -4,8 +4,6 @@
 #include <stdlib.h>
 
 
-
-
 #define BUFFERSIZE (unsigned int) (2<<15)
 
 int init_fifo();
