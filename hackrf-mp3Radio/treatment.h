@@ -24,4 +24,4 @@ void U8_to_uint8(AVFrame *frame);
 void U8P_to_uint8(AVFrame *frame);
 void S64_to_int32(AVFrame *frame);
 void S64P_to_int32(AVFrame *frame);
-int getFormat(AVFrame *frame, void (**treatment_func)(AVFrame*));
+void (*getFormat(AVFrame *frame))(AVFrame *);

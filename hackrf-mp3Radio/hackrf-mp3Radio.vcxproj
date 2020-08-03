@@ -72,12 +72,14 @@
     <ClCompile Include="fifo.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="audio.c" />
+    <ClCompile Include="test.c" />
     <ClCompile Include="treatment.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="decode_mp3.h" />
     <ClInclude Include="fifo.h" />
     <ClInclude Include="audio.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="treatment.h" />
   </ItemGroup>
   <ItemDefinitionGroup />

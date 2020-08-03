@@ -27,21 +27,21 @@ int init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **f
 }
 
 
-void* decode(void *arg)
+void* decode(const char *arg)
 {
 	int ret = -1, stream_idx=0, decod_return;
 	AVCodecContext *codec_ctx = NULL;
 	AVFormatContext *fmt_ctx = NULL;
 	AVPacket packet;
 	AVFrame *frame;
-	struct decoder_args *thread_args = (struct decoder_args *) arg;
-	void (*treatment)(AVFrame*);
+	char *filename = (char *) arg;
+	void (*treatment)(AVFrame*) = NULL;
 	   
 
 	//INIT DECODE
 	av_init_packet(&packet);
 	if ((frame = av_frame_alloc()) == NULL) pthread_exit(&ret);
-	if (init_decode(thread_args->file_name, &codec_ctx, &fmt_ctx, &stream_idx) < 0)
+	if (init_decode(filename, &codec_ctx, &fmt_ctx, &stream_idx) < 0)
 	{
 		close_decode(codec_ctx, fmt_ctx);
 		pthread_exit(&ret);
@@ -51,7 +51,7 @@ void* decode(void *arg)
 	do
 	{
 		decod_return = av_read_frame(fmt_ctx, &packet);
-		if (decod_return <0) break;
+		if (decod_return < 0) break;
 		if (packet.stream_index == stream_idx)
 		{
 			if (avcodec_send_packet(codec_ctx, &packet) < 0)
@@ -66,7 +66,8 @@ void* decode(void *arg)
 			}
 			if (first_time)
 			{
-				if (getFormat(frame,&treatment) < 0)
+				treatment = getFormat(frame);
+				if (treatment == 0)
 				{
 					printf("Format not supported\n");
 					exit(-1);
@@ -80,7 +81,7 @@ void* decode(void *arg)
 	av_frame_free(&frame);
 	close_decode(codec_ctx, fmt_ctx);
 	ret = 0;
-	return (&ret);
+	return NULL;
 }
 void treat_packet(AVFrame *frame)
 {
