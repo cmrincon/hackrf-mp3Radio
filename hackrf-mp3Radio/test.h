@@ -4,4 +4,5 @@
 #include "fifo.h"
 #include "audio.h"
 
+void radioTest();
 void audioTest(const char filepath[]);

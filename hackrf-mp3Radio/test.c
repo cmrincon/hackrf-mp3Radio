@@ -1,5 +1,14 @@
 #include "test.h"
 
+void radioTest()
+{
+	initSDR(5e5,433.92e6,30);
+	send();
+	closeSDR();
+
+}
+
+
 void audioTest(const char filepath[])
 {
 	pthread_t thread_id;

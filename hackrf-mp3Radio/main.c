@@ -10,7 +10,8 @@ int main(int argc,char *argv[])
 		exit(-1);
 	}
 	const char* file_name = argv[1];
-	audioTest(file_name);
+	//audioTest(file_name);
+	radioTest();
 
 	return 0;
 }

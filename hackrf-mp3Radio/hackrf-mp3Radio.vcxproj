@@ -51,7 +51,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
-      <LibraryDependencies>avcodec;avformat;portaudio;pthread;avutil</LibraryDependencies>
+      <LibraryDependencies>avcodec;avformat;portaudio;pthread;avutil;SoapySDR</LibraryDependencies>
     </Link>
     <RemotePostBuildEvent>
       <Command>gpio export 17 out</Command>
@@ -72,6 +72,7 @@
     <ClCompile Include="fifo.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="audio.c" />
+    <ClCompile Include="radioModule.c" />
     <ClCompile Include="test.c" />
     <ClCompile Include="treatment.c" />
   </ItemGroup>
@@ -79,6 +80,7 @@
     <ClInclude Include="decode_mp3.h" />
     <ClInclude Include="fifo.h" />
     <ClInclude Include="audio.h" />
+    <ClInclude Include="radioModule.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="treatment.h" />
   </ItemGroup>
