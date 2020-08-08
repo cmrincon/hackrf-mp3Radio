@@ -53,29 +53,21 @@ void closeSDR()
 	SoapySDRDevice_unmake(sdr);
 
 }
-void send()
+void send() // Modification needed
 {
-	SoapySDRDevice_activateStream(sdr, txStream, 0, 0, 0); //start streaming
-	const unsigned int toneFreq = 1e3;
-	const sampleRate = 5e5;
-	const unsigned int range = sampleRate / toneFreq;
-	const double wt = toneFreq * M_PI * 2 / sampleRate;
+	SoapySDRDevice_activateStream(sdr, txStream, 0, 0, 0); 
 
-	complex float buff[range];
+	char buff[1024];
+	long long timeNs = 0; 
+	int flags = 0; 
 
-	for (unsigned int i = 0; i < range; i++)
-		buff[i] = sin(wt*i) + 0 * I;
 
-	long long timeNs = 0; //timestamp for receive buffer
-	int flags = 0; //flags set by receive operation
-	const double temp = (double) range/sampleRate * 1e9;
-	const unsigned int bufferPeriod = (unsigned int)temp;
-	for (unsigned int i = 0; i < 50000; i++)
+	while (true)
 	{
-		void *buffs[] = { buff }; //array of buffers
-		if (SoapySDRDevice_writeStream(sdr, txStream, buffs, range, &flags, timeNs, 1e6) < 1) 		
+		void *buffs[] = { buff };
+		if (SoapySDRDevice_writeStream(sdr, txStream, buffs, 1024, &flags, timeNs, 1e6) < 1) 		
 			printf("WriteStream error: %s\n", SoapySDRDevice_lastError());
 	}
 
-	SoapySDRDevice_deactivateStream(sdr, txStream, 0, 0); //stop streaming
+	SoapySDRDevice_deactivateStream(sdr, txStream, 0, 0); 
 }

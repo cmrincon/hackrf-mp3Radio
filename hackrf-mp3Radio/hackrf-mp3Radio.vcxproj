@@ -69,18 +69,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="decode_mp3.c" />
-    <ClCompile Include="fifo.c" />
+    <ClCompile Include="filo.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="audio.c" />
     <ClCompile Include="radioModule.c" />
+    <ClCompile Include="signal_procesing.c" />
     <ClCompile Include="test.c" />
     <ClCompile Include="treatment.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="decode_mp3.h" />
-    <ClInclude Include="fifo.h" />
+    <ClInclude Include="filo.h" />
     <ClInclude Include="audio.h" />
     <ClInclude Include="radioModule.h" />
+    <ClInclude Include="signal_procesing.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="treatment.h" />
   </ItemGroup>

@@ -27,15 +27,15 @@ int init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **f
 }
 
 
-void* decode(const char *arg)
+void* decode(decoder_args args)
 {
 	int ret = -1, stream_idx=0, decod_return;
 	AVCodecContext *codec_ctx = NULL;
 	AVFormatContext *fmt_ctx = NULL;
 	AVPacket packet;
 	AVFrame *frame;
-	char *filename = (char *) arg;
-	void (*treatment)(AVFrame*) = NULL;
+	char *filename = (char *) args.file_name;
+	void (*treatment)(filo_ctx*, AVFrame*) = NULL;
 	   
 
 	//INIT DECODE
@@ -74,10 +74,10 @@ void* decode(const char *arg)
 				}
 				first_time = 0;
 			}
-			treatment(frame);
+			treatment(args.outputBuffer, frame);
 			av_frame_unref(frame);
 		}
-	} while (1);
+	} while (1); //need a exit condition.
 	av_frame_free(&frame);
 	close_decode(codec_ctx, fmt_ctx);
 	ret = 0;

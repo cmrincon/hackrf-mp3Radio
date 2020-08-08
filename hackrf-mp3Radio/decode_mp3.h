@@ -1,3 +1,4 @@
+#pragma once
 #include<libavcodec/avcodec.h>
 #include<libavformat/avformat.h>
 #include<string.h>
@@ -7,18 +8,31 @@
 
 
 
-struct decoder_args
+typedef struct decoder_args_t
 {
 	char *file_name;
-};
-int parser(enum AVSampleFormat input_format, unsigned long pa_format);
+	filo_ctx *outputBuffer;
+}decoder_args;
+
+/**
+* Open the input file and initilize de decoder resources.
+* @param file_name Name of the file to open.
+* @param codec_ctx Decoder context.
+* @param fmt_ctx Decoder format.
+* @param stream_index Index.
+*/
 int init_decode(char* file_name, AVCodecContext **codec_ctx, AVFormatContext **fmt_ctx, int *stream_index);
+/**
+* Close the resources of the decoder.
+*/
 void close_decode(AVCodecContext *codec_ctx, AVFormatContext *fmt_ctx);
-extern void* decode(const char *arg);
+/**
+* Function which can be run in a thread. It uses the FIFO module to push the output of the decoder.
+* @param arg Name of the mp3 file.
+*/
+extern void* decode(decoder_args args);
 void treat_packet(AVFrame *frame);
 
-
-//extern unsigned int bufferFreeLen;
 
 
 

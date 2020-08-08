@@ -1,7 +1,7 @@
 #pragma once
 #include"audio.h"
 #include<libavformat/avformat.h>
-#include "fifo.h"
+#include "filo.h"
 /**
 * Data of the stream.
 */
@@ -17,53 +17,53 @@ extern struct dataFormat format;
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void S16_to_int16(AVFrame *frame);
+void S16_to_int16(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void S16P_to_int16(AVFrame *frame);
+void S16P_to_int16(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void S32_to_int32(AVFrame *frame);
+void S32_to_int32(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void S32P_to_int32(AVFrame *frame);
+void S32P_to_int32(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void float_to_float32(AVFrame *frame);
+void float_to_float32(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void floatP_to_float32(AVFrame *frame);
+void floatP_to_float32(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void double_to_float32(AVFrame *frame);
+void double_to_float32(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void doubleP_to_float32(AVFrame *frame);
+void doubleP_to_float32(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void U8_to_uint8(AVFrame *frame);
+void U8_to_uint8(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void U8P_to_uint8(AVFrame *frame);
+void U8P_to_uint8(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void S64_to_int32(AVFrame *frame);
+void S64_to_int32(filo_ctx *buffer, AVFrame *frame);
 /**
 * Conversion between dataformats and push the data to the buffer using the FIFO module.
 */
-void S64P_to_int32(AVFrame *frame);
+void S64P_to_int32(filo_ctx *buffer, AVFrame *frame);
 
 /**
 * Return a pointer to one of the treatment functions in function of the frame format.
 */
-void (*getFormat(AVFrame *frame))(AVFrame *);
+void (*getFormat(AVFrame *frame))(filo_ctx *buffer, AVFrame *);

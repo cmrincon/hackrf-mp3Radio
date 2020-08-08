@@ -46,11 +46,11 @@ Number of sample formats. DO NOT USE if linking dynamically.
 */
 struct dataFormat format;
 
-void S16_to_int16(AVFrame *frame)
+void S16_to_int16(filo_ctx *buffer, AVFrame *frame)
 {
-	fifo_push(frame->data[0], (size_t)(frame->linesize[0]));
+	filo_push(buffer, frame->data[0], (size_t)(frame->linesize[0]));
 }
-void S16P_to_int16(AVFrame *frame)
+void S16P_to_int16(filo_ctx *buffer, AVFrame *frame)
 {
 		/*uint8_t conv_data[(frame->linesize[0]) * 2];
 
@@ -76,14 +76,14 @@ void S16P_to_int16(AVFrame *frame)
 			*(ptr_inter_data++) = *(ptr_frame_data[channel]++);
 	}
 
-	fifo_push((uint8_t *) &interleaved_data, ((size_t) frame->linesize[0] * format.nChannels));
+	filo_push(buffer, (uint8_t *) &interleaved_data, ((size_t) frame->linesize[0] * format.nChannels));
 }
 
-void S32_to_int32(AVFrame *frame)
+void S32_to_int32(filo_ctx *buffer, AVFrame *frame)
 {
-	fifo_push(frame->data[0], (size_t)(frame->linesize[0]));
+	filo_push(buffer, frame->data[0], (size_t)(frame->linesize[0]));
 }
-void S32P_to_int32(AVFrame *frame)
+void S32P_to_int32(filo_ctx *buffer, AVFrame *frame)
 {
 	int32_t interleaved_data[(size_t) frame->linesize[0] * format.nChannels];
 	int32_t *ptr_frame_data[format.nChannels];
@@ -97,13 +97,13 @@ void S32P_to_int32(AVFrame *frame)
 		for (unsigned int channel = 0; channel < format.nChannels; channel++)
 			*(ptr_inter_data++) = *(ptr_frame_data[channel]++);
 	}
-	fifo_push((uint8_t *) &interleaved_data, ((size_t)frame->linesize[0] * format.nChannels));
+	filo_push(buffer, (uint8_t *) &interleaved_data, ((size_t)frame->linesize[0] * format.nChannels));
 }
-void float_to_float32(AVFrame *frame)
+void float_to_float32(filo_ctx *buffer, AVFrame *frame)
 {
-	fifo_push(frame->data[0], (size_t) frame->linesize[0]);
+	filo_push(buffer, frame->data[0], (size_t) frame->linesize[0]);
 }
-void floatP_to_float32(AVFrame *frame)
+void floatP_to_float32(filo_ctx *buffer, AVFrame *frame)
 {
 	float interleaved_data[(size_t) frame->linesize[0] * format.nChannels];
 	float *ptr_frame_data[format.nChannels];
@@ -117,9 +117,9 @@ void floatP_to_float32(AVFrame *frame)
 		for (unsigned int channel = 0; channel < format.nChannels; channel++)
 			*(ptr_inter_data++) = *(ptr_frame_data[channel]++);
 	}
-	fifo_push((uint8_t *) &interleaved_data, ((size_t) frame->linesize[0] * format.nChannels));
+	filo_push(buffer, (uint8_t *) &interleaved_data, ((size_t) frame->linesize[0] * format.nChannels));
 }
-void double_to_float32(AVFrame *frame)
+void double_to_float32(filo_ctx *buffer, AVFrame *frame)
 {
 	float interleaved_data[frame->linesize[0]];
 	float *ptr_inter_data = (float *) &interleaved_data;
@@ -129,9 +129,9 @@ void double_to_float32(AVFrame *frame)
 	{
 			*(ptr_inter_data++) = (float) *(ptr_frame_data++);
 	}
-	fifo_push((uint8_t *) &interleaved_data, (size_t) frame->linesize[0]);
+	filo_push(buffer, (uint8_t *) &interleaved_data, (size_t) frame->linesize[0]);
 }
-void doubleP_to_float32(AVFrame *frame)
+void doubleP_to_float32(filo_ctx *buffer, AVFrame *frame)
 {
 	float interleaved_data[(size_t) frame->linesize[0] * format.nChannels];
 	double *ptr_frame_data[format.nChannels];
@@ -145,13 +145,13 @@ void doubleP_to_float32(AVFrame *frame)
 		for (unsigned int channel = 0; channel < format.nChannels; channel++)
 			*(ptr_inter_data++) = (float) *(ptr_frame_data[channel]++);
 	}
-	fifo_push((uint8_t *) &interleaved_data, ((size_t) frame->linesize[0] * format.nChannels));
+	filo_push(buffer, (uint8_t *) &interleaved_data, ((size_t) frame->linesize[0] * format.nChannels));
 }
-void U8_to_uint8(AVFrame *frame)
+void U8_to_uint8(filo_ctx *buffer, AVFrame *frame)
 {
-	fifo_push(frame->data[0], (size_t) frame->linesize[0]);
+	filo_push(buffer, frame->data[0], (size_t) frame->linesize[0]);
 }
-void U8P_to_uint8(AVFrame *frame)
+void U8P_to_uint8(filo_ctx *buffer, AVFrame *frame)
 {
 	uint8_t interleaved_data[(size_t) frame->linesize[0] * format.nChannels];
 	uint8_t *ptr_frame_data[format.nChannels];
@@ -165,22 +165,22 @@ void U8P_to_uint8(AVFrame *frame)
 		for (unsigned int channel = 0; channel < format.nChannels; channel++)
 			*(ptr_inter_data++) = *(ptr_frame_data[channel]++);
 	}
-	fifo_push(&interleaved_data[0], ((size_t) frame->linesize[0] * format.nChannels));
+	filo_push(buffer, &interleaved_data[0], ((size_t) frame->linesize[0] * format.nChannels));
 }
-void S64_to_int32(AVFrame *frame)
+void S64_to_int32(filo_ctx *buffer, AVFrame *frame)
 {
 
 }
-void S64P_to_int32(AVFrame *frame)
+void S64P_to_int32(filo_ctx *buffer, AVFrame *frame)
 {
 	
 }
 
-void (*getFormat(AVFrame *frame))(AVFrame *)
+void (*getFormat(AVFrame *frame))(filo_ctx *, AVFrame *)
 {
 	format.nChannels = (unsigned int) frame->channels;
 	format.sampleRate = (unsigned int) frame->sample_rate;
-	void (*treatment_func)(AVFrame *);
+	void (*treatment_func)(filo_ctx *, AVFrame *);
 	switch (frame->format)
 	{
 		case AV_SAMPLE_FMT_U8:
